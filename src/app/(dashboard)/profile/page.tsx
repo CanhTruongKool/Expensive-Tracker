@@ -21,46 +21,39 @@ export default async function ProfilePage() {
   return (
     <div className="flex flex-col space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight">Hồ sơ</h2>
+        <h2 className="text-4xl font-bold tracking-tight text-[#003C45]">HỒ SƠ</h2>
       </div>
 
-      <Tabs defaultValue="profile" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="profile">Thông tin cá nhân</TabsTrigger>
-          <TabsTrigger value="account">Tài khoản</TabsTrigger>
-        </TabsList>
-
+      <Tabs defaultValue="profile">
         <TabsContent value="profile" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Thông tin cá nhân</CardTitle>
-              <CardDescription>Quản lý thông tin cá nhân của bạn</CardDescription>
-            </CardHeader>
-            <CardContent>
+          <div className="bg-white rounded-2xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 border-2 border-[#003C454D]">
+            {/* Cột trái - Thông tin cá nhân */}
+            <div>
+              <h2 className="text-lg font-semibold text-[#003C45] mb-1">Thông tin cá nhân</h2>
+              <p className="text-sm text-muted-foreground mb-5 italic">Quản lý thông tin cá nhân của bạn</p>
               <Suspense fallback={<ProfileFormSkeleton />}>
                 <ProfileForm user={user} />
               </Suspense>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
 
-        <TabsContent value="account" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Thông tin tài khoản</CardTitle>
-              <CardDescription>Xem thông tin tài khoản của bạn</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-1">
-                <p className="text-sm font-medium text-muted-foreground">Email</p>
-                <p className="text-sm">{user.email}</p>
+            {/* Cột phải - Thông tin tài khoản */}
+            <div className="h-fit">
+              <h2 className="text-lg font-semibold text-[#003C45] mb-1">Tài khoản</h2>
+              <p className="text-sm text-muted-foreground mb-5 italic">Xem thông tin tài khoản của bạn</p>
+              <div className="text-sm space-y-4">
+                <div>
+                  <span className="font-semibold text-[#003C45] mb-3">Email:</span>
+                  <br />
+                  <span className="italic">{user.email}</span>
+                </div>
+                <div>
+                  <span className="font-semibold text-[#003C45] mb-3">Ngày tạo tài khoản:</span>
+                  <br />
+                  <span className="italic">{new Date(user.created_at!).toLocaleDateString('vi-VN')}</span>
+                </div>
               </div>
-              <div className="space-y-1">
-                <p className="text-sm font-medium text-muted-foreground">Ngày tạo tài khoản</p>
-                <p className="text-sm">{new Date(user.created_at!).toLocaleDateString('vi-VN')}</p>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </TabsContent>
       </Tabs>
     </div>

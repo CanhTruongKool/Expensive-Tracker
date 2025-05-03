@@ -65,25 +65,26 @@ export default function RegisterPage() {
   return (
     <div className="relative min-h-screen bg-cover bg-center">
       {/* Grid left panel */}
-      <div className="grid grid-cols-2 min-h-screen">
+      <div className="grid grid-cols-2 min-h-screen mr-10">
         <div className="flex min-h-screen relative items-center justify-center">
           <div className="relative z-10 flex flex-col items-center justify-center min-h-screen w-full px-10 gap-8">
             <img src="/images/logo_white.png" alt="Finotiq Logo" className="absolute top-12 left-8 bot-10 z-30 h-80 w-auto" />
             <div className="text-white space-y-10 text-left">
               <h1 className="text-5xl font-extrabold">Ghi nhanh - Chi đúng</h1>
-              <p className="text-xl max-w-xl">
-                Finotiq giúp bạn theo dõi chi tiêu hằng ngày một cách dễ dàng, trực quan và thông minh. Ghi chú nhanh – Chi tiêu hợp lý – Báo cáo trực quan.
-              </p>
+              <p className="text-xl max-w-xl leading-9 text-justify">
+              Finotiq giúp bạn theo dõi chi tiêu hằng ngày một cách dễ dàng, trực quan và thông minh. Ghi chú nhanh –
+              Chi tiêu hợp lý – Báo cáo trực quan.
+            </p>
             </div>
           </div>
         </div>
         <div />
       </div>
-      <div className="w-[45%] h-9/10 bg-white rounded-t-2xl flex items-center justify-center px-6 absolute bottom-0 left-[50%]">
+      <div className="w-[45%] h-9/10 bg-white rounded-t-2xl flex items-center justify-center px-6 absolute bottom-0 left-[50%] ml-10">
         <div className="w-full max-w-md space-y-10">
           <div className="text-center space-y-4">
-            <h1 className="text-3xl font-bold text-teal-900">Đăng ký</h1>
-            <p className="text-gray-500">Tạo tài khoản mới để sử dụng ứng dụng</p>
+            <h1 className="text-4xl font-bold text-[#003c45]">Đăng ký</h1>
+            <p className="text-[#545454]">Tạo tài khoản mới để sử dụng ứng dụng</p>
           </div>
           {error && (
             <Alert variant="destructive">
@@ -91,19 +92,19 @@ export default function RegisterPage() {
             </Alert>
           )}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-green-700">Họ tên</Label>
-              <Input id="name" placeholder="Nguyễn Văn A" {...register('name')} />
+            <div className="space-y-2 mb-7">
+              <Label htmlFor="name" className="text-[#003c45] mb-3">Họ và Tên:</Label>
+              <Input id="name" className='border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white' placeholder="Nguyễn Văn A" {...register('name')} />
               {errors.name && <p className="text-sm font-medium text-destructive">{errors.name.message}</p>}
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-green-700">Email</Label>
-              <Input id="email" placeholder="example@example.com" {...register('email')} />
+            <div className="space-y-2 mb-7">
+              <Label htmlFor="email" className="text-[#003c45] mb-3">Email:</Label>
+              <Input id="email" className='border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white' placeholder="example@example.com" {...register('email')} />
               {errors.email && <p className="text-sm font-medium text-destructive">{errors.email.message}</p>}
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-green-700">Mật khẩu</Label>
-              <Input id="password" type="password" {...register('password')} />
+            <div className="space-y-2 mb-7">
+              <Label htmlFor="password" className="text-[#003c45] mb-3">Mật khẩu:</Label>
+              <Input id="password" className='border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white' type="password" {...register('password')} />
               {errors.password && <p className="text-sm font-medium text-destructive">{errors.password.message}</p>}
             </div>
             <Button className="w-full bg-[#003C45] hover:bg-[#00262c] text-[#F4FAB9] font-bold border-none" type="submit" disabled={loading}>
@@ -113,12 +114,12 @@ export default function RegisterPage() {
                   <span className="text-[#F4FAB9]">Đang đăng ký...</span>
                 </>
               ) : (
-                <span className="text-[#F4FAB9]">Đăng ký</span>
+                <span className="text-[#F4FAB9] cursor-pointer">ĐĂNG KÝ</span>
               )}
             </Button>
           </form>
           <div className="text-center text-sm">
-            Đã có tài khoản?{' '}
+            Đã có tài khoản ?{' '}
             <Link href="/login" className="underline font-bold text-[#003C45]">
               ĐĂNG NHẬP
             </Link>

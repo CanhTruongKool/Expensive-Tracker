@@ -35,17 +35,17 @@ export default function DashboardPage() {
 
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="overview" className="tab-custom">Tổng quan</TabsTrigger>
-          <TabsTrigger value="analytics" className="tab-custom">Phân tích</TabsTrigger>
-          <TabsTrigger value="budgets" className="tab-custom">Ngân sách</TabsTrigger>
+          <TabsTrigger value="overview" className="tab-custom text-black data-[state=active]:text-[#545454]">Tổng quan</TabsTrigger>
+          <TabsTrigger value="analytics" className="tab-custom text-black data-[state=active]:text-[#545454]">Phân tích</TabsTrigger>
+          <TabsTrigger value="budgets" className="tab-custom text-black data-[state=active]:text-[#545454]">Ngân sách</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-4 border-2 border-[#003C454D]">
               <CardHeader>
-                <CardTitle>Giao dịch gần đây</CardTitle>
-                <CardDescription>5 giao dịch gần nhất của bạn</CardDescription>
+                <CardTitle className='text-[#003C45]'>Giao dịch gần đây</CardTitle>
+                <CardDescription className="italic">5 giao dịch gần nhất của bạn</CardDescription>
               </CardHeader>
               <CardContent>
                 <RecentTransactions />
@@ -54,8 +54,8 @@ export default function DashboardPage() {
 
             <Card className="col-span-3 border-2 border-[#003C454D]">
               <CardHeader>
-                <CardTitle>Chi tiêu theo danh mục</CardTitle>
-                <CardDescription>Phân bổ chi tiêu trong tháng này</CardDescription>
+                <CardTitle className='text-[#003C45]'>Chi tiêu theo danh mục</CardTitle>
+                <CardDescription className="italic">Phân bổ chi tiêu trong tháng này</CardDescription>
               </CardHeader>
               <CardContent>
                 <Suspense fallback={<ChartSkeleton />}>
@@ -69,8 +69,8 @@ export default function DashboardPage() {
         <TabsContent value="analytics" className="space-y-4">
           <Card className="border-2 border-[#003C454D]">
             <CardHeader>
-              <CardTitle>Phân tích chi tiêu</CardTitle>
-              <CardDescription>Phân tích chi tiết chi tiêu của bạn theo thời gian</CardDescription>
+              <CardTitle className='text-[#003C45]'>Phân tích chi tiêu</CardTitle>
+              <CardDescription className="italic">Phân tích chi tiết chi tiêu của bạn theo thời gian</CardDescription>
             </CardHeader>
             <CardContent className="h-[300px]">
               <Suspense fallback={<ChartSkeleton height={300} />}>
@@ -83,8 +83,8 @@ export default function DashboardPage() {
         <TabsContent value="budgets" className="space-y-4">
           <Card className="border-2 border-[#003C454D]">
             <CardHeader>
-              <CardTitle>Ngân sách của bạn</CardTitle>
-              <CardDescription>Theo dõi tiến độ ngân sách hàng tháng</CardDescription>
+              <CardTitle className='text-[#003C45]'>Ngân sách của bạn</CardTitle>
+              <CardDescription className='italic'>Theo dõi tiến độ ngân sách hàng tháng</CardDescription>
             </CardHeader>
             <CardContent>
               <Suspense fallback={<BudgetSkeleton />}>

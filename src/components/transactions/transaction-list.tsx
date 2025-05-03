@@ -156,10 +156,10 @@ export default function TransactionList() {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <p className="text-muted-foreground mb-4">Không có giao dịch nào phù hợp với bộ lọc của bạn.</p>
-        <Button asChild>
+        <Button className="bg-[#003C45] text-[#F4FAB9] hover:bg-[#00262c]" asChild>
           <Link href="/transactions/new">Thêm giao dịch mới</Link>
         </Button>
-      </div>
+        </div>
     )
   }
 

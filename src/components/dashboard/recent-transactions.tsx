@@ -68,7 +68,7 @@ export default function RecentTransactions() {
     return (
       <div className="flex flex-col items-center justify-center h-[200px] text-center p-4">
         <p className="text-muted-foreground mb-4">Bạn chưa có giao dịch nào. Hãy bắt đầu theo dõi chi tiêu của bạn.</p>
-        <Button asChild>
+        <Button className='bg-[#003c45] text-[#f4fab9] hover:bg-[#00262c]' asChild>
           <Link href="/transactions/new">Thêm giao dịch đầu tiên</Link>
         </Button>
       </div>

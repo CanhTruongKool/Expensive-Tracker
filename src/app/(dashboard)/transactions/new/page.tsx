@@ -9,14 +9,12 @@ import { useRouter } from 'next/navigation'
 export default function NewTransactionPage() {
   const router = useRouter()
   return (
-    <div className="w-full max-w-none mx-auto my-2">
+    <div className="flex flex-col space-y-6">
       {/* Header trên cùng */}
-      <div className="flex items-center justify-between px-2 pb-4">
-        <h1 className="text-4xl font-bold tracking-tight text-[#003C45]">GIAO DỊCH</h1>
+      <div className="flex items-center justify-between">
+      <h2 className="text-4xl font-bold tracking-tight text-[#003C45]">GIAO DỊCH</h2>
         <Button
-          type="button"
-          variant="outline"
-          className="border-[#003C45] bg-[#003C45] text-white hover:bg-[#E6F2F3] hover:text-[#003C45]"
+          className="flex items-center gap-2 bg-[#003C45] text-[#F4FAB9] font-bold px-4 py-2 rounded-md hover:bg-[#00262c] transition cursor-pointer"
           onClick={() => router.back()}
         >
           <span className="mr-2">←</span> Quay lại

@@ -79,8 +79,8 @@ export default function BudgetProgress() {
     return (
       <div className="flex flex-col items-center justify-center h-[200px] text-center p-4">
         <p className="text-muted-foreground mb-4">Bạn chưa thiết lập ngân sách nào cho tháng này.</p>
-        <Button asChild>
-          <Link href="/budgets" className='bg-[#003C45] text-white'>Thiết lập ngân sách</Link>
+        <Button asChild className='bg-[#003C45] text-[#f4fab9]'>
+          <Link href="/budgets">Thiết lập ngân sách</Link>
         </Button>
       </div>
     )

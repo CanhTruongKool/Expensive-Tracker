@@ -9,14 +9,14 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight text-[#003C45]">BÁO CÁO</h2>
+        <h2 className="text-4xl font-bold tracking-tight text-[#003C45]">BÁO CÁO</h2>
       </div>
 
       <Tabs defaultValue="monthly" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="monthly">Báo cáo tháng</TabsTrigger>
-          <TabsTrigger value="categories">Phân tích danh mục</TabsTrigger>
-          <TabsTrigger value="trends">Xu hướng</TabsTrigger>
+          <TabsTrigger value="monthly" className='tab-custom text-black data-[state=active]:text-[#545454]'>Báo cáo tháng</TabsTrigger>
+          <TabsTrigger value="categories" className='tab-custom text-black data-[state=active]:text-[#545454]'>Phân tích danh mục</TabsTrigger>
+          <TabsTrigger value="trends" className='tab-custom text-black data-[state=active]:text-[#545454]'>Xu hướng</TabsTrigger>
         </TabsList>
 
         <TabsContent value="monthly" className="space-y-4">

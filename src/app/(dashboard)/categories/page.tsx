@@ -8,7 +8,7 @@ export default function CategoriesPage() {
   return (
     <div className="flex flex-col space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight text-[#003C45]">DANH MỤC</h2>
+        <h2 className="text-4xl font-bold tracking-tight text-[#003C45]">DANH MỤC</h2>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">

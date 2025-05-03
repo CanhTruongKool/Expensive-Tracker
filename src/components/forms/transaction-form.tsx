@@ -53,7 +53,12 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [billInfo, setBillInfo] = useState<{ amount: string, date: string, description: string, category: string } | null>(null)
+  const [billInfo, setBillInfo] = useState<{
+    amount: string
+    date: string
+    description: string
+    category: string
+  } | null>(null)
   const [showBillModal, setShowBillModal] = useState(false)
   const [loadingBill, setLoadingBill] = useState(false)
 
@@ -90,7 +95,9 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       setUserId(user?.id || null)
     }
     getUser()
@@ -148,7 +155,7 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
           categoryId: data.categoryId,
           date: isoDate,
           userId,
-          description: data.description || null
+          description: data.description || null,
         }),
       })
 
@@ -171,136 +178,161 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
 
   function fileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = () => {
-        const result = reader.result as string | null;
-        if (result) resolve(result.split(',')[1]);
-        else reject('No result');
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+        const result = reader.result as string | null
+        if (result) resolve(result.split(',')[1])
+        else reject('No result')
+      }
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
   }
 
-  async function recognizeBillWithGoogleVision(file: File): Promise<{ text: string, blocks: any[] }> {
-    const apiKey = process.env.NEXT_PUBLIC_VISION_API_KEY;
+  async function recognizeBillWithGoogleVision(file: File): Promise<{ text: string; blocks: any[] }> {
+    const apiKey = process.env.NEXT_PUBLIC_VISION_API_KEY
     if (!apiKey) {
-      throw new Error('VISION_API_KEY is not defined in environment variables');
+      throw new Error('VISION_API_KEY is not defined in environment variables')
     }
-    const base64 = await fileToBase64(file);
+    const base64 = await fileToBase64(file)
 
-    const response = await fetch(
-      `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          requests: [
-            {
-              image: { content: base64 },
-              features: [{ type: 'DOCUMENT_TEXT_DETECTION' }]
-            }
-          ]
-        })
-      }
-    );
-    const result = await response.json();
-    const annotation = result.responses?.[0]?.fullTextAnnotation;
-    const text = annotation?.text || '';
-    const blocks = result.responses?.[0]?.fullTextAnnotation?.pages?.[0]?.blocks || [];
-    return { text, blocks };
+    const response = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requests: [
+          {
+            image: { content: base64 },
+            features: [{ type: 'DOCUMENT_TEXT_DETECTION' }],
+          },
+        ],
+      }),
+    })
+    const result = await response.json()
+    const annotation = result.responses?.[0]?.fullTextAnnotation
+    const text = annotation?.text || ''
+    const blocks = result.responses?.[0]?.fullTextAnnotation?.pages?.[0]?.blocks || []
+    return { text, blocks }
   }
 
   function extractBillInfo(text: string) {
-    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    const lines = text
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean)
     // 1. Số tiền: tìm dòng có từ khóa ưu tiên nhất
     const moneyKeywords = [
-      'tổng dịch vụ', 'tổng thanh toán', 'tổng cộng', 'thanh toán', 'total', 'cash', 'tổng','tổng:', 'Tổng:', 'Tổng'
-    ];
-    let amount = '';
+      'tổng dịch vụ',
+      'tổng thanh toán',
+      'tổng cộng',
+      'thanh toán',
+      'total',
+      'cash',
+      'tổng',
+      'tổng:',
+      'Tổng:',
+      'Tổng',
+    ]
+    let amount = ''
     for (const kw of moneyKeywords) {
-      const line = lines.find(l => l.toLowerCase().includes(kw));
+      const line = lines.find((l) => l.toLowerCase().includes(kw))
       if (line) {
-        const matches = line.match(/([0-9][0-9.,]*)/g);
+        const matches = line.match(/([0-9][0-9.,]*)/g)
         if (matches) {
-          amount = matches.reduce((max, cur) =>
-            Number(cur.replace(/[^0-9.]/g, '').replace(/,/g, '')) > Number(max.replace(/[^0-9.]/g, '').replace(/,/g, '')) ? cur : max, '0');
-          break;
+          amount = matches.reduce(
+            (max, cur) =>
+              Number(cur.replace(/[^0-9.]/g, '').replace(/,/g, '')) >
+              Number(max.replace(/[^0-9.]/g, '').replace(/,/g, ''))
+                ? cur
+                : max,
+            '0',
+          )
+          break
         }
       }
     }
     // Nếu chưa tìm được, lấy số cuối cùng trên bill
     if (!amount) {
-      const matches = text.match(/([0-9][0-9.,]{3,})/g);
+      const matches = text.match(/([0-9][0-9.,]{3,})/g)
       if (matches) {
-        amount = matches[matches.length - 1];
+        amount = matches[matches.length - 1]
       }
     }
     // Kiểm tra số tiền phải lớn hơn 10000
     if (Number(amount.replace(/[^0-9.]/g, '').replace(/,/g, '')) <= 10000) {
-      const matches = text.match(/([0-9][0-9.,]{3,})/g);
+      const matches = text.match(/([0-9][0-9.,]{3,})/g)
       if (matches) {
         for (let i = matches.length - 1; i >= 0; i--) {
-          const num = Number(matches[i].replace(/[^0-9.]/g, '').replace(/,/g, ''));
+          const num = Number(matches[i].replace(/[^0-9.]/g, '').replace(/,/g, ''))
           if (num > 10000) {
-            amount = matches[i];
-            break;
+            amount = matches[i]
+            break
           }
         }
       }
     }
     // 2. Category
-    const foodKeywords = ['ăn uống', 'restaurant', 'rest', 'food', 'cafe', 'coffee', 'quán ăn', 'RES', 'res', 'Cà phê', 'CÀ PHÊ'];
-    let category = '';
-    if (foodKeywords.some(k => text.toLowerCase().includes(k))) {
-      category = 'Ăn uống';
+    const foodKeywords = [
+      'ăn uống',
+      'restaurant',
+      'rest',
+      'food',
+      'cafe',
+      'coffee',
+      'quán ăn',
+      'RES',
+      'res',
+      'Cà phê',
+      'CÀ PHÊ',
+    ]
+    let category = ''
+    if (foodKeywords.some((k) => text.toLowerCase().includes(k))) {
+      category = 'Ăn uống'
     }
     // 3. Nội dung: lấy dòng đầu tiên có nhiều kí tự in hoa, in đậm
-    let content = lines[0] || '';
+    let content = lines[0] || ''
     for (const line of lines) {
-      const upperCount = (line.match(/[A-Z]/g) || []).length;
+      const upperCount = (line.match(/[A-Z]/g) || []).length
       if (upperCount > 0) {
-        content = line;
-        break;
+        content = line
+        break
       }
     }
     return {
       amount: amount.replace(/[^0-9.]/g, '').replace(/,/g, ''),
       category,
       description: content,
-    };
+    }
   }
 
   const handleAnalyzeBill = async () => {
-    if (!selectedFile) return;
-    setLoadingBill(true);
-    const { text, blocks } = await recognizeBillWithGoogleVision(selectedFile);
-    setLoadingBill(false);
-    const extracted = extractBillInfo(text);
+    if (!selectedFile) return
+    setLoadingBill(true)
+    const { text, blocks } = await recognizeBillWithGoogleVision(selectedFile)
+    setLoadingBill(false)
+    const extracted = extractBillInfo(text)
     setBillInfo({
       amount: extracted.amount,
       date: '', // Có thể extract ngày nâng cao nếu muốn
       description: extracted.description,
       category: extracted.category,
-    });
-    setShowBillModal(true);
-  };
+    })
+    setShowBillModal(true)
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
-      const fileUrl = URL.createObjectURL(e.target.files[0]);
-      setPreviewUrl(fileUrl);
+      setSelectedFile(e.target.files[0])
+      const fileUrl = URL.createObjectURL(e.target.files[0])
+      setPreviewUrl(fileUrl)
     }
-  };
+  }
 
   return (
-    <Card className="w-full max-w-none mx-auto border border-[#003C454D]">
+    <Card className="w-full max-w-none mx-auto border-2 border-[#003C454D]">
       {/* Header trên cùng */}
       <div className="px-6 pb-0">
-        <h1 className="text-2xl font-bold tracking-tight text-[#003C45] mb-0">
-          {transaction ? 'Chỉnh sửa giao dịch' : 'Tạo giao dịch mới'}
-        </h1>
+        <h1 className="text-[#003C45] font-bold">{transaction ? 'Chỉnh sửa giao dịch' : 'Tạo giao dịch mới'}</h1>
         <span className="italic text-sm text-muted-foreground mt-0">
           {transaction ? 'Cập nhật thông tin giao dịch của bạn' : 'Nhập thông tin cho giao dịch mới'}
         </span>
@@ -322,20 +354,34 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                 className="mb-6"
               >
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="expense" className='text-[#003C45]'>Chi tiêu</TabsTrigger>
-                  <TabsTrigger value="income" className='text-[#003C45]'>Thu nhập</TabsTrigger>
+                  <TabsTrigger value="expense" className="tab-custom text-black data-[state=active]:text-[#545454]">
+                    Chi tiêu
+                  </TabsTrigger>
+                  <TabsTrigger value="income" className="tab-custom text-black data-[state=active]:text-[#545454]">
+                    Thu nhập
+                  </TabsTrigger>
                 </TabsList>
               </Tabs>
 
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="amount" className="text-[#003C45] font-semibold">Số tiền</Label>
-                  <Input id="amount" type="number" placeholder="0" {...register('amount', { valueAsNumber: true })} />
+                <div className="space-y-2 mb-7">
+                  <Label htmlFor="amount" className="text-[#003C45] font-semibold mb-3">
+                    Số tiền:
+                  </Label>
+                  <Input
+                    id="amount"
+                    className="border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white"
+                    type="number"
+                    placeholder="0"
+                    {...register('amount', { valueAsNumber: true })}
+                  />
                   {errors.amount && <p className="text-sm font-medium text-destructive">{errors.amount.message}</p>}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="categoryId" className="text-[#003C45] font-semibold">Danh mục</Label>
+                <div className="space-y-2 mb-7">
+                  <Label htmlFor="categoryId" className="text-[#003C45] font-semibold mb-3">
+                    Danh mục:
+                  </Label>
                   <Select
                     defaultValue={transaction?.categoryId || ''}
                     onValueChange={(value) => setValue('categoryId', value)}
@@ -360,17 +406,21 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                       )}
                     </SelectContent>
                   </Select>
-                  {errors.categoryId && <p className="text-sm font-medium text-destructive">{errors.categoryId.message}</p>}
+                  {errors.categoryId && (
+                    <p className="text-sm font-medium text-destructive">{errors.categoryId.message}</p>
+                  )}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="date" className="text-[#003C45] font-semibold">Ngày</Label>
+                <div className="space-y-2 mb-7">
+                  <Label htmlFor="date" className="text-[#003C45] font-semibold mb-3">
+                    Ngày:
+                  </Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
                         className={cn(
-                          'w-full justify-start text-left font-normal',
+                          'w-full justify-start text-left font-normal border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white',
                           !watch('date') && 'text-muted-foreground',
                         )}
                       >
@@ -390,15 +440,28 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                   {errors.date && <p className="text-sm font-medium text-destructive">{errors.date.message}</p>}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="description" className="text-[#003C45] font-semibold">Mô tả (tùy chọn)</Label>
-                  <Textarea id="description" placeholder="Nhập mô tả cho giao dịch" rows={3} {...register('description')} />
+                <div className="space-y-2 mb-7">
+                  <Label htmlFor="description" className="text-[#003C45] font-semibold mb-3">
+                    Mô tả (tùy chọn):
+                  </Label>
+                  <Textarea
+                    id="description"
+                    className="border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white"
+                    placeholder="Nhập mô tả cho giao dịch"
+                    rows={3}
+                    {...register('description')}
+                  />
                 </div>
 
                 <input type="hidden" {...register('type')} />
               </div>
               <div className="pt-4">
-                <Button type="submit" form="transaction-form" disabled={loading} className="w-full bg-[#003C45] hover:bg-[#005C6B] text-white">
+                <Button
+                  type="submit"
+                  form="transaction-form"
+                  disabled={loading}
+                  className="w-full bg-[#003C45] hover:bg-[#00262c] text-[#f4fab9] cursor-pointer"
+                >
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -419,7 +482,7 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                 <span className="text-center text-muted-foreground mb-2">Hoặc Upload hóa đơn</span>
                 <button
                   type="button"
-                  className="w-56 h-56 rounded-lg border-2 border-dashed border-[#003C45] flex items-center justify-center text-7xl text-[#E6F2F3] bg-[#003C45] hover:bg-[#005C6B] transition-colors"
+                  className="w-56 h-56 rounded-lg border-2 border-dashed border-[#003C45] flex items-center justify-center text-7xl text-[#E6F2F3] bg-[#003C45] hover:bg-[#00262c] transition-colors cursor-pointer"
                   onClick={() => fileInputRef.current?.click()}
                 >
                   {previewUrl ? (
@@ -428,20 +491,14 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                     '+'
                   )}
                 </button>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  onChange={handleFileChange}
-                  accept="image/*"
-                />
+                <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileChange} accept="image/*" />
                 {selectedFile && !previewUrl && (
                   <span className="mt-2 text-sm text-[#003C45] font-medium">{selectedFile.name}</span>
                 )}
               </div>
               <Button
                 type="button"
-                className={`w-50 ${selectedFile ? 'bg-[#003C45] text-white hover:bg-[#005C6B]' : 'bg-gray-200 text-gray-400'}`}
+                className={`w-50 cursor-pointer ${selectedFile ? 'bg-[#003C45] text-[#f4fab9] hover:bg-[#00262c]' : 'bg-gray-200 text-[#f4fab9]'}`}
                 disabled={!selectedFile || loadingBill}
                 onClick={handleAnalyzeBill}
               >
@@ -459,13 +516,15 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
           <div className="mb-2">
             <div className="font-semibold text-[#003C45] mb-1">Nội dung:</div>
             <div className="bg-[#F5F8F9] rounded px-3 py-2 text-sm text-gray-800 whitespace-pre-line">
-              {billInfo?.category+ ' tại '+billInfo?.description || ''}
+              {billInfo?.category + ' tại ' + billInfo?.description || ''}
             </div>
           </div>
           <div className="grid grid-cols-3 gap-4 mt-4 mb-6">
             <div>
               <div className="text-xs text-muted-foreground mb-1">Số tiền:</div>
-              <div className="font-semibold text-[#003C45]">{Number(billInfo?.amount || 0).toLocaleString('vi-VN')} VND</div>
+              <div className="font-semibold text-[#003C45]">
+                {Number(billInfo?.amount || 0).toLocaleString('vi-VN')} VND
+              </div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground mb-1">Loại</div>
@@ -480,24 +539,24 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
             <Button
               variant="outline"
               onClick={() => {
-                setShowBillModal(false);
-                setSelectedFile(null);
-                setPreviewUrl(null);
+                setShowBillModal(false)
+                setSelectedFile(null)
+                setPreviewUrl(null)
               }}
-              className="border-[#003C45] text-[#003C45] hover:bg-[#E6F2F3] hover:text-[#003C45]"
+              className="border-[#003C45] text-[#003C45] hover:bg-[#00262c]"
             >
               Hủy
             </Button>
             <Button
               onClick={() => {
-                setValue('amount', Number(billInfo?.amount || 0));
-                setValue('description', billInfo?.description || '');
-                setValue('categoryId', billInfo?.category || '');
-                setShowBillModal(false);
-                setSelectedFile(null);
-                setPreviewUrl(null);
+                setValue('amount', Number(billInfo?.amount || 0))
+                setValue('description', billInfo?.description || '')
+                setValue('categoryId', billInfo?.category || '')
+                setShowBillModal(false)
+                setSelectedFile(null)
+                setPreviewUrl(null)
               }}
-              className="bg-[#003C45] text-white hover:bg-[#005C6B]"
+              className="bg-[#003C45] text-white hover:bg-[#00262c]"
             >
               Xác nhận
             </Button>

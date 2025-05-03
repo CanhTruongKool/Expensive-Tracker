@@ -129,7 +129,7 @@ export default function CategoryBreakdown() {
   }
 
   if (data.length === 0) {
-    return <div>Không có dữ liệu chi tiêu</div>
+    return <p className="text-muted-foreground mb-4">Không có dữ liệu chi tiêu.</p>
   }
 
   return (
@@ -147,7 +147,7 @@ export default function CategoryBreakdown() {
           </CardHeader>
           <CardContent className="space-y-4">
             <Progress value={category.percentage} className="h-2" />
-            
+
             <div className="space-y-2">
               <h4 className="text-sm font-medium">Giao dịch gần đây</h4>
               {category.transactions.map((transaction) => (
