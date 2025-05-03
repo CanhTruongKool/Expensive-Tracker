@@ -15,9 +15,21 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { User as UserIcon, LogOut } from 'lucide-react'
 import { useState } from 'react'
+import { createBrowserClient } from '@supabase/ssr'
+import router from 'next/router'
 
 interface HeaderProps {
   user: User
+}
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+const handleLogout = async () => {
+  await supabase.auth.signOut()
+  router.push('/login')
 }
 
 export default function Header({ user }: HeaderProps) {
@@ -76,10 +88,6 @@ export default function Header({ user }: HeaderProps) {
                   <Link
                     href="/profile"
                     className="flex items-center gap-2 text-[#003C45]"
-                    onClick={e => {
-                      e.preventDefault();
-                      setShowProfileOverlay(true);
-                    }}
                   >
                     <UserIcon className="h-4 w-4" /> Hồ sơ
                   </Link>

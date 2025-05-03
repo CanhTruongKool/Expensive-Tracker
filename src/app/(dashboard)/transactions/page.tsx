@@ -22,7 +22,7 @@ export default function TransactionsPage() {
 
       <Card className="border-2 border-[#003C454D]">
         <CardHeader className="pb-3">
-          <CardTitle>Danh sách giao dịch</CardTitle>
+          <CardTitle className='text-[#003C45]'>Danh sách giao dịch</CardTitle>
           <CardDescription className="italic">Quản lý tất cả các giao dịch thu nhập và chi tiêu của bạn</CardDescription>
         </CardHeader>
         <CardContent>

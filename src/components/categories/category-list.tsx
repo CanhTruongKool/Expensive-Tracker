@@ -141,8 +141,8 @@ export default function CategoryList() {
     <div className="space-y-4">
       <Tabs defaultValue="expense" onValueChange={(value) => setActiveTab(value as 'expense' | 'income')}>
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="expense">Chi tiêu</TabsTrigger>
-          <TabsTrigger value="income">Thu nhập</TabsTrigger>
+          <TabsTrigger value="expense" className='tab-custom text-black data-[state=active]:text-[#545454]'>Chi tiêu</TabsTrigger>
+          <TabsTrigger value="income" className='tab-custom text-black data-[state=active]:text-[#545454]'>Thu nhập</TabsTrigger>
         </TabsList>
 
         <TabsContent value="expense" className="mt-4">

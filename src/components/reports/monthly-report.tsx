@@ -72,7 +72,7 @@ export default function MonthlyReport() {
   return (
     <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-3">
-        <Card>
+        <Card className='border-2 border-[#003C454D]'>
           <CardHeader>
             <CardTitle className="text-[#003C45]">Thu nhập</CardTitle>
             <CardDescription className="italic">Tổng thu nhập tháng này</CardDescription>
@@ -82,7 +82,7 @@ export default function MonthlyReport() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className='border-2 border-[#003C454D]'>
           <CardHeader>
             <CardTitle className="text-[#003C45]">Chi tiêu</CardTitle>
             <CardDescription className="italic">Tổng chi tiêu tháng này</CardDescription>
@@ -92,7 +92,7 @@ export default function MonthlyReport() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className='border-2 border-[#003C454D]'>
           <CardHeader>
             <CardTitle className="text-[#003C45]">Số dư</CardTitle>
             <CardDescription className="italic">Số dư cuối tháng</CardDescription>
@@ -104,7 +104,7 @@ export default function MonthlyReport() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Card>
+        <Card className='border-2 border-[#003C454D]'>
           <CardHeader>
             <CardTitle className="text-[#003C45]">Chi tiêu theo danh mục</CardTitle>
             <CardDescription className="italic">Phân bổ chi tiêu tháng này</CardDescription>
@@ -125,7 +125,7 @@ export default function MonthlyReport() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className='border-2 border-[#003C454D]'>
           <CardHeader>
             <CardTitle className="text-[#003C45]">Ngân sách</CardTitle>
             <CardDescription className="italic">Theo dõi ngân sách tháng này</CardDescription>

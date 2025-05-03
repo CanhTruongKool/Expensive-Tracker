@@ -107,7 +107,7 @@ export default function TrendChart() {
   }
 
   if (data.length === 0) {
-    return <div>Không có dữ liệu để hiển thị xu hướng</div>
+    return <p className="text-muted-foreground mb-4">Không có dữ liệu để hiển thị xu hướng.</p>
   }
 
   const chartData = data.map(trend => ({

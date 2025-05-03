@@ -68,28 +68,33 @@ export default function ProfileForm({ user }: ProfileFormProps) {
         </Alert>
       )}
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+      <div className="space-y-2 mb-7">
+        <Label htmlFor="email" className='text-[#003c45] mb-3'>Email:</Label>
         <Input id="email" type="email" value={user.email} disabled className="bg-muted" />
         <p className="text-xs text-muted-foreground">Email không thể thay đổi và được sử dụng để đăng nhập</p>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="name">Họ tên</Label>
+      <div className="space-y-2 mb-7">
+        <Label htmlFor="name" className='text-[#003c45] mb-3'>Họ và Tên:</Label>
         <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nhập họ tên của bạn" />
         <p className="text-xs text-muted-foreground">Họ tên của bạn sẽ được hiển thị trong ứng dụng</p>
       </div>
 
-      <Button type="submit" disabled={loading}>
-        {loading ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Đang lưu...
-          </>
-        ) : (
-          'Lưu thay đổi'
-        )}
-      </Button>
+      <Button
+  type="submit"
+  disabled={loading}
+  className="w-full bg-[#003C45] hover:bg-[#002d34] text-[#F4FAB9] font-semibold"
+>
+  {loading ? (
+    <>
+      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      Đang lưu...
+    </>
+  ) : (
+    'LƯU THAY ĐỔI'
+  )}
+</Button>
+
     </form>
   )
 }

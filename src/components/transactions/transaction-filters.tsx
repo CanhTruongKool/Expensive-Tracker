@@ -89,9 +89,9 @@ export default function TransactionFilters() {
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
-          <div className="flex items-center gap-2 flex-nowrap">
-            <label className="text-sm font-medium text-[#003C45] min-w-[70px]">Loại</label>
-            <Select
+          <div className="flex items-center gap-2 flex-">
+            <label className="text-sm font-medium text-[#003C45] min-w-[70px]">Loại:</label>
+            <div className='border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white'><Select
               value={type || 'all'}
               onValueChange={(value) => {
                 setType(value || undefined)
@@ -107,12 +107,14 @@ export default function TransactionFilters() {
                 <SelectItem value="income">Thu nhập</SelectItem>
               </SelectContent>
             </Select>
+            </div>
           </div>
         </div>
 
         <div>
           <div className="flex items-center gap-2 flex-nowrap">
             <label className="text-sm font-medium text-[#003C45] min-w-[70px]">Danh mục</label>
+            <div className='border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white'>
             <Select value={categoryId || 'all'} onValueChange={(value) => setCategoryId(value || undefined)}>
               <SelectTrigger>
                 <SelectValue placeholder="Danh mục" />
@@ -129,6 +131,7 @@ export default function TransactionFilters() {
                 ))}
               </SelectContent>
             </Select>
+            </div>
           </div>
         </div>
 
@@ -138,7 +141,7 @@ export default function TransactionFilters() {
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className={cn('w-full justify-start text-left', !startDate && 'text-muted-foreground')}
+                  className={cn('w-full justify-start text-left border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white', !startDate && 'text-muted-foreground')}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {startDate ? format(startDate, 'PPP', { locale: vi }) : <span>Từ ngày</span>}
@@ -157,7 +160,7 @@ export default function TransactionFilters() {
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className={cn('w-full justify-start text-left', !endDate && 'text-muted-foreground')}
+                  className={cn('w-full justify-start text-left border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white', !endDate && 'text-muted-foreground')}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {endDate ? format(endDate, 'PPP', { locale: vi }) : <span>Đến ngày</span>}
@@ -172,10 +175,10 @@ export default function TransactionFilters() {
       </div>
 
       <div className="flex items-center gap-2">
-        <Button onClick={applyFilters} disabled={isLoading} className="bg-[#003C45] text-[#F4FAB9] hover:bg-[#00262c]">
+        <Button onClick={applyFilters} disabled={isLoading} className="bg-[#003C45] text-[#F4FAB9] hover:bg-[#00262c] cursor-pointer">
           Áp dụng bộ lọc
         </Button>
-        <Button onClick={resetFilters} disabled={isLoading} className="bg-[#003C45] text-[#F4FAB9] hover:bg-[#00262c]">
+        <Button onClick={resetFilters} disabled={isLoading} className="bg-[#003C45] text-[#F4FAB9] hover:bg-[#00262c] cursor-pointer">
           Xóa bộ lọc
         </Button>
       </div>

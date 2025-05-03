@@ -116,90 +116,120 @@ export default function BudgetForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+  {error && (
+    <Alert variant="destructive">
+      <AlertDescription>{error}</AlertDescription>
+    </Alert>
+  )}
 
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center">
-            <Label htmlFor="month" className="text-[#003C45] w-16">Tháng</Label>
-            <Select defaultValue={month.toString()} onValueChange={(value) => setValue('month', parseInt(value))}>
-              <SelectTrigger id="month" className="w-[140px]">
-                <SelectValue placeholder="Chọn tháng" />
-              </SelectTrigger>
-              <SelectContent>
-                {monthOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value.toString()}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+  {/* Danh mục */}
+  <div className='mb-7'>
+    <Label htmlFor="categoryId" className="text-[#003C45] font-semibold mb-1 block mb-3">
+      Danh sách danh mục:
+    </Label>
+    <div className="border border-[#003c45]/30 focus-within:border-[#003c45] rounded-md bg-white">
+      <Select value={watch('categoryId')} onValueChange={(value) => setValue('categoryId', value)}>
+        <SelectTrigger id="categoryId" className="w-full">
+          <SelectValue placeholder="Chọn danh mục" />
+        </SelectTrigger>
+        <SelectContent>
+          {categories.length === 0 ? (
+            <SelectItem value="none" disabled>
+              Không có danh mục chi tiêu.
+            </SelectItem>
+          ) : (
+            categories.map((category) => (
+              <SelectItem key={category.id} value={category.id}>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: category.color }} />
+                  {category.name}
+                </div>
+              </SelectItem>
+            ))
+          )}
+        </SelectContent>
+      </Select>
+    </div>
+    {errors.categoryId && (
+      <p className="text-sm font-medium text-destructive mt-1">{errors.categoryId.message}</p>
+    )}
+  </div>
 
-          <div className="flex items-center ml-3 gap-0">
-            <Label htmlFor="year" className="text-[#003C45] w-16">Năm</Label>
-            <Select defaultValue={year.toString()} onValueChange={(value) => setValue('year', parseInt(value))}>
-              <SelectTrigger id="year" className="w-[120px]">
-                <SelectValue placeholder="Chọn năm" />
-              </SelectTrigger>
-              <SelectContent>
-                {yearOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value.toString()}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Label htmlFor="categoryId" className="text-[#003C45] w-16">Danh mục</Label>
-          <Select value={watch('categoryId')} onValueChange={(value) => setValue('categoryId', value)}>
-            <SelectTrigger id="categoryId" className="w-full">
-              <SelectValue placeholder="Chọn danh mục" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.length === 0 ? (
-                <SelectItem value="none" disabled>
-                  Không có danh mục chi tiêu
-                </SelectItem>
-              ) : (
-                categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: category.color }} />
-                      {category.name}
-                    </div>
-                  </SelectItem>
-                ))
-              )}
-            </SelectContent>
-          </Select>
-          {errors.categoryId && <p className="text-sm font-medium text-destructive">{errors.categoryId.message}</p>}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Label htmlFor="amount" className="text-[#003C45] w-16">Số tiền</Label>
-          <Input id="amount" type="number" placeholder="0" {...register('amount', { valueAsNumber: true })} />
-          {errors.amount && <p className="text-sm font-medium text-destructive">{errors.amount.message}</p>}
-        </div>
+  {/* Tháng và Năm */}
+  <div className="flex gap-4 mb-7">
+    <div className="flex-1">
+      <Label htmlFor="month" className="text-[#003C45] font-semibold mb-1 block mb-3">
+        Tháng:
+      </Label>
+      <div className="border border-[#003c45]/30 focus-within:border-[#003c45] rounded-md bg-white">
+        <Select defaultValue={month.toString()} onValueChange={(value) => setValue('month', parseInt(value))}>
+          <SelectTrigger id="month" className="w-full">
+            <SelectValue placeholder="Chọn tháng" />
+          </SelectTrigger>
+          <SelectContent>
+            {monthOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value.toString()}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
+    </div>
 
-      <Button type="submit" disabled={loading || categories.length === 0} className="w-full bg-[#003C45] text-white">
-        {loading ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Đang lưu...
-          </>
-        ) : (
-          'Thiết lập ngân sách'
-        )}
-      </Button>
-    </form>
+    <div className="flex-1">
+      <Label htmlFor="year" className="text-[#003C45] font-semibold mb-1 block mb-3">
+        Năm:
+      </Label>
+      <div className="border border-[#003c45]/30 focus-within:border-[#003c45] rounded-md bg-white">
+        <Select defaultValue={year.toString()} onValueChange={(value) => setValue('year', parseInt(value))}>
+          <SelectTrigger id="year" className="w-full">
+            <SelectValue placeholder="Chọn năm" />
+          </SelectTrigger>
+          <SelectContent>
+            {yearOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value.toString()}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  </div>
+
+  {/* Số tiền */}
+  <div className='mb-7'>
+    <Label htmlFor="amount" className="text-[#003C45] font-semibold mb-1 block mb-3">
+      Số tiền ngân sách:
+    </Label>
+    <Input
+      id="amount"
+      type="number"
+      placeholder="0"
+      {...register('amount', { valueAsNumber: true })}
+      className="border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white w-full"
+    />
+    {errors.amount && (
+      <p className="text-sm font-medium text-destructive mt-1">{errors.amount.message}</p>
+    )}
+  </div>
+
+  {/* Nút submit */}
+  <Button
+    type="submit"
+    disabled={loading || categories.length === 0}
+    className="w-full bg-[#003C45] text-[#F4FAB9] hover:bg-[#00262c] cursor-pointer mt-2"
+  >
+    {loading ? (
+      <>
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        Đang lưu...
+      </>
+    ) : (
+      'TẠO NGÂN SÁCH'
+    )}
+  </Button>
+</form>
   )
 }

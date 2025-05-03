@@ -10,7 +10,8 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname.startsWith('/_next') ||
       request.nextUrl.pathname.startsWith('/static') ||
       request.nextUrl.pathname.startsWith('/images') ||
-      request.nextUrl.pathname.startsWith('/login')
+      request.nextUrl.pathname.startsWith('/login') ||
+      request.nextUrl.pathname.startsWith('/register')
     ) {
       return NextResponse.next()
     }

@@ -120,21 +120,21 @@ export default function CategoryForm({ category }: CategoryFormProps) {
         defaultValue={category?.type || 'expense'}
         onValueChange={(value) => setValue('type', value as 'income' | 'expense')}
       >
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="expense">Chi tiêu</TabsTrigger>
-          <TabsTrigger value="income">Thu nhập</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsTrigger value="expense" className='tab-custom text-black data-[state=active]:text-[#545454]'>Chi tiêu</TabsTrigger>
+          <TabsTrigger value="income" className='tab-custom text-black data-[state=active]:text-[#545454]'>Thu nhập</TabsTrigger>
         </TabsList>
       </Tabs>
 
-      <div className="space-y-2">
-        <Label htmlFor="name" className='text-[#003C45]'>Tên danh mục</Label>
-        <Input id="name" placeholder="Nhập tên danh mục" {...register('name')} />
+      <div className="space-y-2 mb-7">
+        <Label htmlFor="name" className='text-[#003C45] mb-3'>Tên danh mục:</Label>
+        <Input id="name" className='border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white' placeholder="Nhập tên danh mục" {...register('name')} />
         {errors.name && <p className="text-sm font-medium text-destructive">{errors.name.message}</p>}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="color" className='text-[#003C45]'>Màu sắc</Label>
-        <Select defaultValue={category?.color || COLORS[0].value} onValueChange={(value) => setValue('color', value)}>
+      <div className="space-y-2 mb-7">
+        <Label htmlFor="color" className='text-[#003C45] mb-3'>Màu sắc:</Label>
+        <div className='border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white'><Select defaultValue={category?.color || COLORS[0].value} onValueChange={(value) => setValue('color', value)}>
           <SelectTrigger id="color" className="w-full">
             <SelectValue placeholder="Chọn màu sắc">
               <div className="flex items-center gap-2">
@@ -161,23 +161,23 @@ export default function CategoryForm({ category }: CategoryFormProps) {
               ))}
             </div>
           </SelectContent>
-        </Select>
+        </Select></div>
         {errors.color && <p className="text-sm font-medium text-destructive">{errors.color.message}</p>}
       </div>
 
       <input type="hidden" {...register('type')} />
       <input type="hidden" {...register('icon')} value="default" />
 
-      <Button type="submit" disabled={loading} className="w-full bg-[#003C45] text-[#F4FAB9] hover:bg-[#003C45]">
+      <Button type="submit" disabled={loading} className="w-full bg-[#003C45] text-[#F4FAB9] hover:bg-[#003C45] cursor-pointer">
         {loading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Đang lưu...
           </>
         ) : category ? (
-          'Cập nhật danh mục'
+          'CẬP NHẬT DANH MỤC'
         ) : (
-          'Tạo danh mục'
+          'TẠO DANH MỤC'
         )}
       </Button>
     </form>

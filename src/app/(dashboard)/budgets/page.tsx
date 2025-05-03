@@ -8,13 +8,13 @@ export default function BudgetsPage() {
   return (
     <div className="flex flex-col space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight text-[#003C45]">NGÂN SÁCH</h2>
+        <h2 className="text-4xl font-bold tracking-tight text-[#003C45]">NGÂN SÁCH</h2>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Card>
+        <Card className='border-2 border-[#003C454D]'>
           <CardHeader>
-            <CardTitle className='text-[#003C45]'>Thiết lập ngân sách</CardTitle>
+            <CardTitle className='text-[#003c45]'>Thiết lập ngân sách</CardTitle>
             <CardDescription className='italic'>Thiết lập ngân sách theo danh mục và tháng</CardDescription>
           </CardHeader>
           <CardContent>
@@ -24,7 +24,7 @@ export default function BudgetsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className='border-2 border-[#003C454D]'>
           <CardHeader>
             <CardTitle className='text-[#003C45]'>Ngân sách hiện tại</CardTitle>
             <CardDescription className='italic'>Theo dõi ngân sách tháng này của bạn</CardDescription>
