@@ -72,12 +72,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     }
 
     const updatedTransaction = await prisma.transaction.update({
-      where: {
-        id,
-      },
-      data: result.data,
-      include: {
-        category: true,
+      where: { id },
+      data: {
+        amount: Number(data.amount),
+        type: data.type,
+        categoryId: data.categoryId,
+        date: new Date(data.date),
+        description: data.description || null,
+        userId: data.userId
       },
     })
 

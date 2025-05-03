@@ -8,8 +8,7 @@
     "start": "next start",
     "biome": "biome check ./src",
     "biome:fix": "biome check --write ./src",
-    "postinstall": "pnpx prisma generate",
-    "vercel-build": "pnpx prisma migrate deploy && next build"
+    "postinstall": "pnpx prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
