@@ -354,10 +354,10 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                 className="mb-6"
               >
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="expense" className="tab-custom text-black data-[state=active]:text-[#545454]">
+                  <TabsTrigger value="expense" className="tab-custom text-[] data-[state=active]:text-[#545454]">
                     Chi tiêu
                   </TabsTrigger>
-                  <TabsTrigger value="income" className="tab-custom text-black data-[state=active]:text-[#545454]">
+                  <TabsTrigger value="income" className="tab-custom text-[] data-[state=active]:text-[#545454]">
                     Thu nhập
                   </TabsTrigger>
                 </TabsList>
@@ -370,11 +370,17 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                   </Label>
                   <Input
                     id="amount"
-                    className="border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     placeholder="0"
-                    {...register('amount', { valueAsNumber: true })}
+                    value={watch('amount')?.toLocaleString('en-US') || ''}
+                    onChange={(e) => {
+                      const raw = e.target.value.replace(/,/g, '')
+                      if (!isNaN(+raw)) setValue('amount', +raw)
+                    }}
+                    className="border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white"
                   />
+
                   {errors.amount && <p className="text-sm font-medium text-destructive">{errors.amount.message}</p>}
                 </div>
 
@@ -425,7 +431,11 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {watch('date') ? format(watch('date'), 'PPP', { locale: vi }) : <span>Chọn ngày</span>}
+                        {watch('date') ? (
+                          `Ngày ${String(watch('date').getDate()).padStart(2, '0')} Tháng ${String(watch('date').getMonth() + 1).padStart(2, '0')} Năm ${watch('date').getFullYear()}`
+                        ) : (
+                          <span>Chọn ngày</span>
+                        )}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
@@ -437,6 +447,7 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                       />
                     </PopoverContent>
                   </Popover>
+
                   {errors.date && <p className="text-sm font-medium text-destructive">{errors.date.message}</p>}
                 </div>
 
@@ -498,7 +509,7 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
               </div>
               <Button
                 type="button"
-                className={`w-50 cursor-pointer ${selectedFile ? 'bg-[#003C45] text-[#f4fab9] hover:bg-[#00262c]' : 'bg-gray-200 text-[#f4fab9]'}`}
+                className={`w-50 cursor-pointer ${selectedFile ? 'bg-[#003C45] text-[#f4fab9] hover:bg-[#00262c]' : 'bg-[#003c45] text-[#f4fab9]'}`}
                 disabled={!selectedFile || loadingBill}
                 onClick={handleAnalyzeBill}
               >
@@ -511,27 +522,27 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
 
       <Dialog open={showBillModal} onOpenChange={setShowBillModal}>
         <DialogContent className="max-w-lg">
-          <DialogTitle className="text-[#003C45] text-lg font-bold">Xác nhận giao dịch mới</DialogTitle>
-          <DialogDescription className="mb-4">Đây có phải là giao dịch bạn vừa thêm không ?</DialogDescription>
+          <DialogTitle className="text-[#003C45] text-xl font-bold -mb-3">Xác nhận giao dịch mới</DialogTitle>
+          <DialogDescription className="mb-4 italic">Đây có phải là giao dịch bạn vừa thêm không ?</DialogDescription>
           <div className="mb-2">
-            <div className="font-semibold text-[#003C45] mb-1">Nội dung:</div>
+            <div className="font-semibold text-[#003C45] mb-3">Nội dung:</div>
             <div className="bg-[#F5F8F9] rounded px-3 py-2 text-sm text-gray-800 whitespace-pre-line">
               {billInfo?.category + ' tại ' + billInfo?.description || ''}
             </div>
           </div>
           <div className="grid grid-cols-3 gap-4 mt-4 mb-6">
             <div>
-              <div className="text-xs text-muted-foreground mb-1">Số tiền:</div>
+              <div className="text-xs mb-1 text-[#545454]">Số tiền:</div>
               <div className="font-semibold text-[#003C45]">
-                {Number(billInfo?.amount || 0).toLocaleString('vi-VN')} VND
+                {Number(billInfo?.amount || 0).toLocaleString('en-US')} VND
               </div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">Loại</div>
+              <div className="text-xs text-[#545454] mb-1">Loại:</div>
               <div className="font-semibold text-[#003C45]">Chi tiêu</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">Danh mục</div>
+              <div className="text-xs text-[#545454] mb-1">Danh mục:</div>
               <div className="font-semibold text-[#003C45]">{billInfo?.category || 'Khác'}</div>
             </div>
           </div>
@@ -543,7 +554,7 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                 setSelectedFile(null)
                 setPreviewUrl(null)
               }}
-              className="border-[#003C45] text-[#003C45] hover:bg-[#00262c]"
+              className="border-[#003C45] text-[#003c45] hover:bg-[#003c452d] hover:border-[#003c452d] cursor-pointer"
             >
               Hủy
             </Button>
@@ -556,7 +567,7 @@ export default function TransactionForm({ transaction }: TransactionFormProps) {
                 setSelectedFile(null)
                 setPreviewUrl(null)
               }}
-              className="bg-[#003C45] text-white hover:bg-[#00262c]"
+              className="bg-[#003C45] text-[#f4fab9] hover:bg-[#00262c] cursor-pointer"
             >
               Xác nhận
             </Button>

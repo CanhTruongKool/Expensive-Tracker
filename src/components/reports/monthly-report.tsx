@@ -72,39 +72,45 @@ export default function MonthlyReport() {
   return (
     <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-3">
-        <Card className='border-2 border-[#003C454D]'>
+        <Card className="border-2 border-[#003C454D]">
           <CardHeader>
             <CardTitle className="text-[#003C45]">Thu nhập</CardTitle>
             <CardDescription className="italic">Tổng thu nhập tháng này</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-green-600">{formatCurrency(data.summary.income)}</p>
+            <p className="text-3xl font-bold text-green-600">
+              {Number(data.summary.income || 0).toLocaleString('en-US')} VNĐ
+            </p>
           </CardContent>
         </Card>
 
-        <Card className='border-2 border-[#003C454D]'>
+        <Card className="border-2 border-[#003C454D]">
           <CardHeader>
             <CardTitle className="text-[#003C45]">Chi tiêu</CardTitle>
             <CardDescription className="italic">Tổng chi tiêu tháng này</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-red-600">{formatCurrency(data.summary.expense)}</p>
+            <p className="text-3xl font-bold text-red-600">
+              {Number(data.summary.expense || 0).toLocaleString('en-US')} VNĐ
+            </p>
           </CardContent>
         </Card>
 
-        <Card className='border-2 border-[#003C454D]'>
+        <Card className="border-2 border-[#003C454D]">
           <CardHeader>
             <CardTitle className="text-[#003C45]">Số dư</CardTitle>
             <CardDescription className="italic">Số dư cuối tháng</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-[#003C45]">{formatCurrency(data.summary.balance)}</p>
+            <p className="text-3xl font-bold text-[#003C45]">
+              {Number(data.summary.balance || 0).toLocaleString('en-US')} VNĐ
+            </p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Card className='border-2 border-[#003C454D]'>
+        <Card className="border-2 border-[#003C454D]">
           <CardHeader>
             <CardTitle className="text-[#003C45]">Chi tiêu theo danh mục</CardTitle>
             <CardDescription className="italic">Phân bổ chi tiêu tháng này</CardDescription>
@@ -112,20 +118,22 @@ export default function MonthlyReport() {
           <CardContent className="space-y-4">
             {data.expenseByCategory.map((category) => (
               <div key={category.categoryId} className="space-y-2">
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-sm text-[#545454]">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full" style={{ backgroundColor: category.color }} />
-                    <span>{category.name}</span>
+                    <span className='text-[#003c45]'>{category.name}</span>
                   </div>
-                  <span>{formatCurrency(category.amount)}</span>
+                  <span className="font-bold text-[#003c45]">
+                    {Number(category.amount || 0).toLocaleString('en-EN')} VNĐ
+                  </span>
                 </div>
-                <Progress value={category.percentage} className="h-2" />
+                <Progress value={category.percentage} className="h-2 [&>*]:bg-[#003c45]" />
               </div>
             ))}
           </CardContent>
         </Card>
 
-        <Card className='border-2 border-[#003C454D]'>
+        <Card className="border-2 border-[#003C454D]">
           <CardHeader>
             <CardTitle className="text-[#003C45]">Ngân sách</CardTitle>
             <CardDescription className="italic">Theo dõi ngân sách tháng này</CardDescription>
@@ -136,14 +144,17 @@ export default function MonthlyReport() {
                 <div className="flex justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full" style={{ backgroundColor: budget.color }} />
-                    <span>{budget.categoryName}</span>
+                    <span className='text-[#003c45]'>{budget.categoryName}</span>
                   </div>
                   <div className="text-right">
-                    <div>{formatCurrency(budget.spentAmount)} / {formatCurrency(budget.budgetAmount)}</div>
-                    <div className="text-xs text-muted-foreground">Còn lại: {formatCurrency(budget.remaining)}</div>
+                    <div className='text-[#003c45] font-bold'>
+                    {budget.spentAmount.toLocaleString('en-US')} VNĐ / {budget.budgetAmount.toLocaleString('en-US')} VNĐ
+                    </div>
+                    <div className="text-xs text-muted-foreground">Còn lại: {budget.remaining.toLocaleString('en-US')} VNĐ
+                    </div>
                   </div>
                 </div>
-                <Progress value={budget.percentage} className="h-2" />
+                <Progress value={budget.percentage} className="h-2 [&>div]:bg-[#003c45]"/>
               </div>
             ))}
           </CardContent>

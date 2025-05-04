@@ -166,19 +166,18 @@ export default function TransactionList() {
   return (
     <div className="space-y-4">
       <Table>
-        <TableCaption>Danh sách giao dịch của bạn.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>Ngày</TableHead>
-            <TableHead>Danh mục</TableHead>
-            <TableHead>Mô tả</TableHead>
-            <TableHead className="text-right">Số tiền</TableHead>
+            <TableHead className='text-[#003c45]'>NGÀY</TableHead>
+            <TableHead className='text-[#003c45]'>DANH MỤC</TableHead>
+            <TableHead className='text-[#003c45]'>MÔ TẢ</TableHead>
+            <TableHead className="text-right text-[#003c45]">SỐ TIỀN</TableHead>
             <TableHead className="w-[80px]"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.transactions.map((transaction) => (
-            <TableRow key={transaction.id}>
+            <TableRow key={transaction.id} className='text-[#545454]'>
               <TableCell className="font-medium">{formatDate(new Date(transaction.date))}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
@@ -197,11 +196,11 @@ export default function TransactionList() {
                   <span
                     className={
                       transaction.type === 'income'
-                        ? 'text-green-600 dark:text-green-500'
-                        : 'text-red-600 dark:text-red-500'
+                        ? 'text-green-600 dark:text-green-500 font-bold'
+                        : 'text-red-600 dark:text-red-500 font-bold'
                     }
                   >
-                    {formatCurrency(transaction.amount)}
+                    {Number(transaction.amount).toLocaleString('en-EN') + ' VNĐ'}
                   </span>
                 </div>
               </TableCell>
@@ -214,7 +213,7 @@ export default function TransactionList() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Hành động</DropdownMenuLabel>
+                    <DropdownMenuLabel className='text-[#003c45]'>Hành động</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link href={`/transactions/${transaction.id}`}>

@@ -12,13 +12,13 @@ import { Suspense, useEffect, useState } from 'react'
 import RecentTransactions from '@/components/dashboard/recent-transactions'
 
 type Transaction = {
-  id: string;
-  content: string;
-  type: string;
-  date: string;
-  value: number;
-  isIncome: boolean;
-};
+  id: string
+  content: string
+  type: string
+  date: string
+  value: number
+  isIncome: boolean
+}
 
 export default function DashboardPage() {
   return (
@@ -35,16 +35,22 @@ export default function DashboardPage() {
 
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="overview" className="tab-custom text-black data-[state=active]:text-[#545454]">Tổng quan</TabsTrigger>
-          <TabsTrigger value="analytics" className="tab-custom text-black data-[state=active]:text-[#545454]">Phân tích</TabsTrigger>
-          <TabsTrigger value="budgets" className="tab-custom text-black data-[state=active]:text-[#545454]">Ngân sách</TabsTrigger>
+          <TabsTrigger value="overview" className="tab-custom text-[#545454] data-[state=active]:text-[#545454]">
+            Tổng quan
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className="tab-custom text-[#545454] data-[state=active]:text-[#545454]">
+            Phân tích
+          </TabsTrigger>
+          <TabsTrigger value="budgets" className="tab-custom text-[#545454] data-[state=active]:text-[#545454]">
+            Ngân sách
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-4 border-2 border-[#003C454D]">
               <CardHeader>
-                <CardTitle className='text-[#003C45]'>Giao dịch gần đây</CardTitle>
+                <CardTitle className="text-[#003C45]">Giao dịch gần đây</CardTitle>
                 <CardDescription className="italic">5 giao dịch gần nhất của bạn</CardDescription>
               </CardHeader>
               <CardContent>
@@ -54,7 +60,7 @@ export default function DashboardPage() {
 
             <Card className="col-span-3 border-2 border-[#003C454D]">
               <CardHeader>
-                <CardTitle className='text-[#003C45]'>Chi tiêu theo danh mục</CardTitle>
+                <CardTitle className="text-[#003C45]">Chi tiêu theo danh mục</CardTitle>
                 <CardDescription className="italic">Phân bổ chi tiêu trong tháng này</CardDescription>
               </CardHeader>
               <CardContent>
@@ -69,10 +75,10 @@ export default function DashboardPage() {
         <TabsContent value="analytics" className="space-y-4">
           <Card className="border-2 border-[#003C454D]">
             <CardHeader>
-              <CardTitle className='text-[#003C45]'>Phân tích chi tiêu</CardTitle>
+              <CardTitle className="text-[#003C45]">Phân tích chi tiêu</CardTitle>
               <CardDescription className="italic">Phân tích chi tiết chi tiêu của bạn theo thời gian</CardDescription>
             </CardHeader>
-            <CardContent className="h-[300px]">
+            <CardContent className="h-[300px] flex items-center justify-center">
               <Suspense fallback={<ChartSkeleton height={300} />}>
                 <ExpenseChart />
               </Suspense>
@@ -83,8 +89,8 @@ export default function DashboardPage() {
         <TabsContent value="budgets" className="space-y-4">
           <Card className="border-2 border-[#003C454D]">
             <CardHeader>
-              <CardTitle className='text-[#003C45]'>Ngân sách của bạn</CardTitle>
-              <CardDescription className='italic'>Theo dõi tiến độ ngân sách hàng tháng</CardDescription>
+              <CardTitle className="text-[#003C45]">Ngân sách của bạn</CardTitle>
+              <CardDescription className="italic">Theo dõi tiến độ ngân sách hàng tháng</CardDescription>
             </CardHeader>
             <CardContent>
               <Suspense fallback={<BudgetSkeleton />}>

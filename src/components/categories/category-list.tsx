@@ -141,8 +141,8 @@ export default function CategoryList() {
     <div className="space-y-4">
       <Tabs defaultValue="expense" onValueChange={(value) => setActiveTab(value as 'expense' | 'income')}>
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="expense" className='tab-custom text-black data-[state=active]:text-[#545454]'>Chi tiêu</TabsTrigger>
-          <TabsTrigger value="income" className='tab-custom text-black data-[state=active]:text-[#545454]'>Thu nhập</TabsTrigger>
+          <TabsTrigger value="expense" className='tab-custom text-[#545454] data-[state=active]:text-[#545454]'>Chi tiêu</TabsTrigger>
+          <TabsTrigger value="income" className='tab-custom text-[#545454] data-[state=active]:text-[#545454]'>Thu nhập</TabsTrigger>
         </TabsList>
 
         <TabsContent value="expense" className="mt-4">
@@ -170,7 +170,7 @@ export default function CategoryList() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Hành động</DropdownMenuLabel>
+                      <DropdownMenuLabel className='text-[#003c45]'>Hành động</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => handleEditClick(category)}>
                         <Edit className="h-4 w-4 mr-2" />
@@ -247,7 +247,7 @@ export default function CategoryList() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Hành động</DropdownMenuLabel>
+                      <DropdownMenuLabel className='text-[#003c45]'>Hành động</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => handleEditClick(category)}>
                         <Edit className="h-4 w-4 mr-2" />
@@ -303,8 +303,8 @@ export default function CategoryList() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Chỉnh sửa danh mục</DialogTitle>
-            <DialogDescription>Chỉnh sửa thông tin danh mục</DialogDescription>
+            <DialogTitle className='text-[#003c45]'>Chỉnh sửa danh mục</DialogTitle>
+            <DialogDescription className='italic'>Chỉnh sửa thông tin danh mục</DialogDescription>
           </DialogHeader>
           {editingCategory && <CategoryForm category={editingCategory} />}
         </DialogContent>

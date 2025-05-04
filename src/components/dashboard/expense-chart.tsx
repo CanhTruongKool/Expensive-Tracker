@@ -111,7 +111,9 @@ export default function ExpenseChart() {
   }))
 
   return (
-    <div className="h-[300px] w-full">
+    <div className="h-[400px] w-full">
+      {' '}
+      {/* Tăng chiều cao container */}
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -120,7 +122,7 @@ export default function ExpenseChart() {
             cy="50%"
             labelLine={false}
             label={renderCustomizedLabel}
-            outerRadius={80}
+            outerRadius={120} // To hơn
             fill="#8884d8"
             dataKey="value"
           >
@@ -128,7 +130,8 @@ export default function ExpenseChart() {
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
-          <Tooltip formatter={(value: number) => [formatCurrency(value), 'Chi tiêu']} />
+          <Tooltip formatter={(value: number) => [`${value.toLocaleString('en-EN')} VNĐ`, 'Chi tiêu']} />
+
           <Legend
             layout="vertical"
             verticalAlign="middle"

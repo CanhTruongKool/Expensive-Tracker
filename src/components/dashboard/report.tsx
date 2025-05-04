@@ -137,11 +137,15 @@ export default function Report() {
               <div className="flex justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: budget.color }} />
-                  <span>{budget.categoryName}</span>
+                  <span className="text-[#545454]">{budget.categoryName}</span>
                 </div>
                 <div className="text-right">
-                  <div>{formatCurrency(budget.spentAmount)} / {formatCurrency(budget.budgetAmount)}</div>
-                  <div className="text-xs text-muted-foreground">Còn lại: {formatCurrency(budget.remaining)}</div>
+                  <div>
+                    {budget.spentAmount.toLocaleString('en-US')} VNĐ / {budget.budgetAmount.toLocaleString('en-US')} VNĐ
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Còn lại: {budget.remaining.toLocaleString('en-US')} VNĐ
+                  </div>
                 </div>
               </div>
               <Progress value={budget.percentage} className="h-2" />
@@ -168,7 +172,8 @@ export default function Report() {
                 </div>
               </div>
               <p className={`text-sm font-medium ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
-                {transaction.type === 'income' ? '+' : '-'}{formatCurrency(transaction.amount)}
+                {transaction.type === 'income' ? '+' : '-'}
+                {formatCurrency(transaction.amount)}
               </p>
             </div>
           ))}
@@ -176,4 +181,4 @@ export default function Report() {
       </Card>
     </div>
   )
-} 
+}

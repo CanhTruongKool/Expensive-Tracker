@@ -42,14 +42,20 @@ export default async function ProfilePage() {
               <p className="text-sm text-muted-foreground mb-5 italic">Xem thông tin tài khoản của bạn</p>
               <div className="text-sm space-y-4">
                 <div>
-                  <span className="font-semibold text-[#003C45] mb-3">Email:</span>
+                  <span className="font-semibold text-[#003C45]">Email:</span>
                   <br />
-                  <span className="italic">{user.email}</span>
+                  <span className="italic text-[#545454]">{user.email}</span>
                 </div>
                 <div>
                   <span className="font-semibold text-[#003C45] mb-3">Ngày tạo tài khoản:</span>
                   <br />
-                  <span className="italic">{new Date(user.created_at!).toLocaleDateString('vi-VN')}</span>
+                  <span className="italic text-[#545454]">
+                    {new Date(user.created_at!).toLocaleDateString('vi-VN', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    })}
+                  </span>
                 </div>
               </div>
             </div>

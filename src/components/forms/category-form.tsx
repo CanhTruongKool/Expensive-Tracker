@@ -121,8 +121,8 @@ export default function CategoryForm({ category }: CategoryFormProps) {
         onValueChange={(value) => setValue('type', value as 'income' | 'expense')}
       >
         <TabsList className="grid w-full grid-cols-2 mb-4">
-          <TabsTrigger value="expense" className='tab-custom text-black data-[state=active]:text-[#545454]'>Chi tiêu</TabsTrigger>
-          <TabsTrigger value="income" className='tab-custom text-black data-[state=active]:text-[#545454]'>Thu nhập</TabsTrigger>
+          <TabsTrigger value="expense" className='tab-custom text-[#545454] data-[state=active]:text-[#545454]'>Chi tiêu</TabsTrigger>
+          <TabsTrigger value="income" className='tab-custom text-[#545454] data-[state=active]:text-[#545454]'>Thu nhập</TabsTrigger>
         </TabsList>
       </Tabs>
 

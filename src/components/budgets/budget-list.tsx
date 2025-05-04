@@ -19,13 +19,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -62,6 +56,7 @@ export default function BudgetList() {
   const [editError, setEditError] = useState<string | null>(null)
 
   const { month, year } = getCurrentMonthYear()
+  const [amount, setAmount] = useState(0)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -209,30 +204,21 @@ export default function BudgetList() {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: budget.color }} />
-              <span className="font-medium">{budget.categoryName}</span>
+              <span className="font-medium text-[#003c45]">{budget.categoryName}</span>
             </div>
-            <div className="text-sm font-medium">
-              {formatCurrency(budget.spentAmount)} / {formatCurrency(budget.budgetAmount)}
+            <div className="text-sm font-medium text-[#545454]">
+              {budget.spentAmount.toLocaleString('en-US')} VNĐ / {budget.budgetAmount.toLocaleString('en-US')} VNĐ
             </div>
           </div>
-          <Progress
-            value={budget.percentage > 100 ? 100 : budget.percentage}
-            className={`h-2 ${budget.percentage > 90 ? 'bg-red-200 dark:bg-red-950' : ''}`}
-            // indicatorClassName={
-            //   budget.percentage > 100
-            //     ? 'bg-red-500'
-            //     : budget.percentage > 90
-            //     ? 'bg-amber-500'
-            //     : undefined
-            // }
-          />
+          <Progress value={budget.percentage > 100 ? 100 : budget.percentage} className="h-2 [&>div]:bg-[#003c45]" />
+
           <div className="flex justify-between text-sm">
-            <span className={budget.percentage > 100 ? 'text-red-500' : ''}>
+            <span className={budget.percentage > 100 ? 'text-red-500' : 'text-[#545454]'}>
               {budget.percentage.toFixed(0)}% sử dụng
             </span>
             <span className={budget.remaining < 0 ? 'text-red-500' : 'text-green-600'}>
               {budget.remaining < 0 ? 'Vượt ' : 'Còn lại '}
-              {formatCurrency(Math.abs(budget.remaining))}
+              {Math.abs(budget.remaining).toLocaleString('en-US')} VNĐ
             </span>
           </div>
           <div className="flex justify-end">
@@ -244,7 +230,7 @@ export default function BudgetList() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Hành động</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-[#003c45]">Hành động</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => handleEditClick(budget)}>
                   <Edit className="h-4 w-4 mr-2" />
@@ -296,8 +282,8 @@ export default function BudgetList() {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Chỉnh sửa ngân sách</DialogTitle>
-            <DialogDescription>Cập nhật số tiền ngân sách</DialogDescription>
+            <DialogTitle className="text-[#003c45]">Chỉnh sửa ngân sách</DialogTitle>
+            <DialogDescription className="italic">Cập nhật số tiền ngân sách</DialogDescription>
           </DialogHeader>
 
           {editingBudget && (
@@ -309,7 +295,9 @@ export default function BudgetList() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="category">Danh mục</Label>
+                <Label htmlFor="category" className="text-[#003c45] mb-3">
+                  Danh mục:
+                </Label>
                 <div className="flex items-center gap-2 py-2">
                   <div className="w-4 h-4 rounded-full" style={{ backgroundColor: editingBudget.color }} />
                   <span>{editingBudget.categoryName}</span>
@@ -317,20 +305,36 @@ export default function BudgetList() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="amount">Số tiền ngân sách</Label>
+                <Label htmlFor="amount" className="text-[#003c45] mb-3">
+                  Số tiền ngân sách:
+                </Label>
                 <Input
                   id="amount"
-                  type="number"
-                  value={newAmount}
-                  onChange={(e) => setNewAmount(Number(e.target.value))}
+                  type="text"
+                  placeholder="0"
+                  value={amount.toLocaleString('en-US')}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/,/g, '').replace(/[^\d]/g, '')
+                    if (!isNaN(+raw)) setAmount(+raw)
+                  }}
+                  className="border border-[#003c45]/30 focus:border-[#003c45] focus:outline-none rounded-md bg-white w-full"
                 />
               </div>
 
               <div className="flex justify-end gap-2 pt-4">
-                <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} disabled={isEditing}>
+                <Button
+                  variant="outline"
+                  className="border-[#003C45] text-[#003c45] hover:bg-[#003c452d] hover:border-[#003c452d] cursor-pointer"
+                  onClick={() => setIsEditDialogOpen(false)}
+                  disabled={isEditing}
+                >
                   Hủy bỏ
                 </Button>
-                <Button onClick={handleEditSave} disabled={isEditing}>
+                <Button
+                  onClick={handleEditSave}
+                  disabled={isEditing}
+                  className="bg-[#003c45] text-[#f4fab9] cursor-pointer"
+                >
                   {isEditing ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
