@@ -67,7 +67,7 @@ export default function Header({ user }: HeaderProps) {
                 <Button variant="ghost" className="relative rounded-full p-0">
                   <div className="flex items-center justify-center rounded-full border-4 border-[#F4FAB9] bg-[#F4FAB9]">
                     <Avatar className="h-8 w-8 bg-[#F4FAB9]">
-                      <AvatarFallback className="text-[#003C45]">{userInitials}</AvatarFallback>
+                      <AvatarFallback className="bg-[#f4fab9] text-[#003C45] font-bold">{userInitials}</AvatarFallback>
                     </Avatar>
                   </div>
                 </Button>

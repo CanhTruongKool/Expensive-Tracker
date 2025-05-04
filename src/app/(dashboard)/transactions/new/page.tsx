@@ -12,7 +12,7 @@ export default function NewTransactionPage() {
     <div className="flex flex-col space-y-6">
       {/* Header trên cùng */}
       <div className="flex items-center justify-between">
-      <h2 className="text-4xl font-bold tracking-tight text-[#003C45]">GIAO DỊCH</h2>
+      <h2 className="text-4xl font-bold tracking-tight text-[#003C45]">TẠO GIAO DỊCH</h2>
         <Button
           className="flex items-center gap-2 bg-[#003C45] text-[#F4FAB9] font-bold px-4 py-2 rounded-md hover:bg-[#00262c] transition cursor-pointer"
           onClick={() => router.back()}

@@ -83,7 +83,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
       <Button
   type="submit"
   disabled={loading}
-  className="w-full bg-[#003C45] hover:bg-[#002d34] text-[#F4FAB9] font-semibold"
+  className="w-full bg-[#003C45] hover:bg-[#002d34] text-[#F4FAB9] font-semibold cursor-pointer"
 >
   {loading ? (
     <>

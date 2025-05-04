@@ -14,9 +14,9 @@ export default function ReportsPage() {
 
       <Tabs defaultValue="monthly" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="monthly" className='tab-custom text-black data-[state=active]:text-[#545454]'>Báo cáo tháng</TabsTrigger>
-          <TabsTrigger value="categories" className='tab-custom text-black data-[state=active]:text-[#545454]'>Phân tích danh mục</TabsTrigger>
-          <TabsTrigger value="trends" className='tab-custom text-black data-[state=active]:text-[#545454]'>Xu hướng</TabsTrigger>
+          <TabsTrigger value="monthly" className='tab-custom text-[#545454] data-[state=active]:text-[#545454]'>Báo cáo tháng</TabsTrigger>
+          <TabsTrigger value="categories" className='tab-custom text-[#545454] data-[state=active]:text-[#545454]'>Phân tích danh mục</TabsTrigger>
+          <TabsTrigger value="trends" className='tab-custom text-[#545454] data-[state=active]:text-[#545454]'>Xu hướng</TabsTrigger>
         </TabsList>
 
         <TabsContent value="monthly" className="space-y-4">
